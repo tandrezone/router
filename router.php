@@ -1,7 +1,6 @@
 <?php
 
 class Router {
-
 	protected $routes = array();
 	protected $namedRoutes = array();
 	protected $basePath = '';
@@ -64,6 +63,19 @@ class Router {
 		$this->matchTypes = array_merge($this->matchTypes, $matchTypes);
 	}
 
+	public function mapFromPackage($method, $route, $target, $package = "", $midleware = 'access', $name = null) {
+		return $this->map($method, $route, $target, $package, $midleware, $name);
+	}
+	public function GET($route,$target) {
+		$midleware = 'access';
+		$name = null;
+		$this->map('GET', $route, $target,$package, $midleware, $name);
+	}
+	public function POST($route,$target) {
+		$midleware = 'access';
+		$name = null;
+		$this->map('POST', $route, $target,$package, $midleware, $name);
+	}
 	/**
 	 * Map a route to a target
 	 *
@@ -72,9 +84,9 @@ class Router {
 	 * @param mixed $target The target where this route should point to. Can be anything.
 	 * @param string $name Optional name of this route. Supply if you want to reverse route this url in your application.
 	 */
-	public function map($method, $route, $target, $name = null) {
+	public function map($method, $route, $target,$package = "", $midleware='access', $name = null) {
 
-		$this->routes[] = array($method, $route, $target, $name);
+		$this->routes[] = array($method, $route, $target,$package, $midleware, $name);
 
 		if($name) {
 			if(isset($this->namedRoutes[$name])) {
@@ -166,7 +178,7 @@ class Router {
 		$_REQUEST = array_merge($_GET, $_POST);
 
 		foreach($this->routes as $handler) {
-			list($method, $_route, $target, $name) = $handler;
+			list($method, $_route, $target, $package, $midleware, $name) = $handler;
 
 			$methods = explode('|', $method);
 			$method_match = false;
@@ -228,7 +240,9 @@ class Router {
 				return array(
 					'target' => $target,
 					'params' => $params,
-					'name' => $name
+					'name' => $name,
+					'package'=>$package,
+					'midleware' => $midleware
 				);
 			}
 		}
