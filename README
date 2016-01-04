@@ -1,0 +1,13 @@
+  moonlight/router
+    Package destinada a fazer routing
+    De momento a funçao map usa a seguinte assinatura
+    /**
+     * [map Usada para executar as funcoes routing]
+     * @param  {[String]} $method             [methodo, pode ser GET, POST, etc]
+     * @param  {[String]} $route              [route /route route a ser mapeada]
+     * @param  {[String]} $target             [funcao a ser executada caso seja string home ele corre automaticamente a funcao index, normalmente este target deve ser nome_controlador.funcao]
+     * @param  {[String]} $package            =             ""   [Package, indica se a funcao a ser executada se encontra dentro das packages, caso esteja vazio ele procura  na app se nao for vazio, procura dentro da package nomeada]
+     * @param  {[String]} $midleware="access" [Midleware, função de permissao, esta função, dentro do controlador a ser usado é executada antes do target, caso esta funcao retorne false o target nao é executado]
+     * @param  {[String]} $name               =             null [Nome que pode ser atribuido á route]
+     */
+    public function map($method, $route, $target, $package = "", $midleware="access", $name = null)
